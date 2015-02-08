@@ -1,11 +1,16 @@
 def build = "build"
-def buildElm = "${build}/elm"
-def buildElmIo = "${build}/elm-io"
+def buildElmMain = "${build}/elm-main"
+def buildElmTest = "${build}/elm-test"
+def buildElmMainIo = "${build}/elm-main-io"
+def buildElmTestIo = "${build}/elm-test-io"
 
 def elmIoBuildScript = "./elm-stuff/packages/maxsnew/IO/1.0.0/elm-io.sh"
 
 def mainElm = "Main.elm"
 def mainJs = "main.js"
+
+def testElm = "Test.elm"
+def testJs = "test.js"
 
 task(cleanBuild, type: Delete) {
     delete 'build'
@@ -36,32 +41,63 @@ task(installElmDependencies, type: Exec) {
 task(buildElmMain, type: Exec) {
     dependsOn installElmDependencies
 
-    commandLine "elm-make", "src/main/elm/${mainElm}", "--output", "${buildElm}/${mainJs}"
+    commandLine "elm-make", "src/main/elm/${mainElm}", "--output", "${buildElmMain}/${mainJs}"
 }
 
-task(mkdirBuildElmIo) {
+task(buildElmTest, type: Exec) {
+    dependsOn installElmDependencies
+
+    commandLine "elm-make", "src/test/elm/${testElm}", "--output", "${buildElmTest}/${testJs}"
+}
+
+task(mkdirBuildElmMainIo) {
     doLast {
-        new File(buildElmIo).mkdirs();
+        new File(buildElmMainIo).mkdirs();
     }
 }
 
-task(buildElmIoMain, type: Exec) {
+task(mkdirBuildElmTestIo) {
+    doLast {
+        new File(buildElmTestIo).mkdirs();
+    }
+}
+
+task(buildElmMainIo, type: Exec) {
     dependsOn buildElmMain
     dependsOn installElmDependencies
-    dependsOn mkdirBuildElmIo
+    dependsOn mkdirBuildElmMainIo
 
-    commandLine "sh", "${elmIoBuildScript}", "${buildElm}/${mainJs}", "${buildElmIo}/${mainJs}"
+    commandLine "sh", "${elmIoBuildScript}", "${buildElmMain}/${mainJs}", "${buildElmMainIo}/${mainJs}"
+}
+
+task(buildElmTestIo, type: Exec) {
+    dependsOn buildElmTest
+    dependsOn installElmDependencies
+    dependsOn mkdirBuildElmTestIo
+
+    commandLine "sh", "${elmIoBuildScript}", "${buildElmTest}/${testJs}", "${buildElmTestIo}/${testJs}"
 }
 
 task(build) {
-    dependsOn buildElmIoMain
+    dependsOn buildElmMainIo
+}
+
+task(runNodeTest, type: Exec) {
+    dependsOn buildElmTestIo
+    dependsOn installNodeDependencies
+
+    commandLine "node", "${buildElmTestIo}/${testJs}"
+}
+
+task(test) {
+    dependsOn runNodeTest
 }
 
 task(runNodeMain, type: Exec) {
-    dependsOn buildElmIoMain
+    dependsOn buildElmMainIo
     dependsOn installNodeDependencies
 
-    commandLine "node", "${buildElmIo}/${mainJs}"
+    commandLine "node", "${buildElmMainIo}/${mainJs}"
 }
 
 task(run) {
