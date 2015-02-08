@@ -1,0 +1,14 @@
+{
+    "version": "0.0.1",
+    "summary": "Elm parser in elm",
+    "repository": "https://github.com/noise64/elm-elm-parser.git",
+    "license": "TBD",
+    "source-directories": [
+        "src"
+    ],
+    "exposed-modules": [
+    ],
+    "dependencies": {
+        "elm-lang/core": "1.0.0 <= v < 2.0.0"
+    }
+}
