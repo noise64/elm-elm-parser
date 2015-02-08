@@ -1,0 +1,7 @@
+{
+  "name": "elm-elm-parser",
+  "version": "0.0.1",
+  "dependencies": {
+    "jsdom": "^3.1.0"
+  }
+}

@@ -15,13 +15,22 @@ task(cleanElmStuff, type: Delete) {
     delete 'elm-stuff'
 }
 
+task(cleanNodeModules, type: Delete) {
+    delete 'node_modules'
+}
+
 task(clean) {
     dependsOn cleanBuild
     dependsOn cleanElmStuff
+    dependsOn cleanNodeModules
+}
+
+task(installNodeDependencies, type: Exec) {
+    commandLine "npm", "install"
 }
 
 task(installElmDependencies, type: Exec) {
-    commandLine "./script/elm-package-install.sh"
+    commandLine "elm-package", "install", "-y"
 }
 
 task(buildElmMain, type: Exec) {
@@ -37,8 +46,8 @@ task(mkdirBuildElmIo) {
 }
 
 task(buildElmIoMain, type: Exec) {
-    dependsOn installElmDependencies
     dependsOn buildElmMain
+    dependsOn installElmDependencies
     dependsOn mkdirBuildElmIo
 
     commandLine "sh", "${elmIoBuildScript}", "${buildElm}/${mainJs}", "${buildElmIo}/${mainJs}"
@@ -50,6 +59,7 @@ task(build) {
 
 task(runNodeMain, type: Exec) {
     dependsOn buildElmIoMain
+    dependsOn installNodeDependencies
 
     commandLine "node", "${buildElmIo}/${mainJs}"
 }
