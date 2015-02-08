@@ -67,3 +67,7 @@ task(runNodeMain, type: Exec) {
 task(run) {
     dependsOn runNodeMain
 }
+
+task(wrapper, type: Wrapper) {
+    gradleVersion = '2.2'
+}
