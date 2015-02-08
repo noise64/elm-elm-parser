@@ -4,7 +4,8 @@
     "repository": "https://github.com/noise64/elm-elm-parser.git",
     "license": "TBD",
     "source-directories": [
-        "src/main/elm"
+        "src/main/elm",
+        "lib/parser"
     ],
     "exposed-modules": [
     ],
