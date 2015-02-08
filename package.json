@@ -1,9 +1,10 @@
 {
-  "name": "elm-elm-parser",
-  "description": "Elm parser in elm",
-  "repository": "https://github.com/noise64/elm-elm-parser.git",
-  "version": "0.0.1",
-  "dependencies": {
-    "jsdom": "^3.1.0"
-  }
+    "name": "elm-elm-parser",
+    "description": "Elm parser in elm",
+    "repository": "https://github.com/noise64/elm-elm-parser.git",
+    "version": "0.0.1",
+    "licence": "BSD-3-Clause",
+    "dependencies": {
+      "jsdom": "^3.1.0"
+    }
 }
