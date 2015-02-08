@@ -7,6 +7,7 @@ How to build?
 -------------
 
 Things needed:
+ - java
  - node / npm (http://nodejs.org/)
  - elm (http://elm-lang.org/)
 
