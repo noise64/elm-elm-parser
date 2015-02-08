@@ -6,7 +6,7 @@ import IO.Runner as IORunner
 
 mainIo : IO ()
 mainIo =
-  IO.putStrLn "Hello IO!" >>>
+  IO.putStrLn "Hello world!" >>>
   IO.exit 0
 
 port requests : Signal IORunner.Request

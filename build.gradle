@@ -1,0 +1,59 @@
+def build = "build"
+def buildElm = "${build}/elm"
+def buildElmIo = "${build}/elm-io"
+
+def elmIoBuildScript = "./elm-stuff/packages/maxsnew/IO/1.0.0/elm-io.sh"
+
+def mainElm = "Main.elm"
+def mainJs = "main.js"
+
+task(cleanBuild, type: Delete) {
+    delete 'build'
+}
+
+task(cleanElmStuff, type: Delete) {
+    delete 'elm-stuff'
+}
+
+task(clean) {
+    dependsOn cleanBuild
+    dependsOn cleanElmStuff
+}
+
+task(installElmDependencies, type: Exec) {
+    commandLine "./script/elm-package-install.sh"
+}
+
+task(buildElmMain, type: Exec) {
+    dependsOn installElmDependencies
+
+    commandLine "elm-make", "src/main/elm/${mainElm}", "--output", "${buildElm}/${mainJs}"
+}
+
+task(mkdirBuildElmIo) {
+    doLast {
+        new File(buildElmIo).mkdirs();
+    }
+}
+
+task(buildElmIoMain, type: Exec) {
+    dependsOn installElmDependencies
+    dependsOn buildElmMain
+    dependsOn mkdirBuildElmIo
+
+    commandLine "sh", "${elmIoBuildScript}", "${buildElm}/${mainJs}", "${buildElmIo}/${mainJs}"
+}
+
+task(build) {
+    dependsOn buildElmIoMain
+}
+
+task(runNodeMain, type: Exec) {
+    dependsOn buildElmIoMain
+
+    commandLine "node", "${buildElmIo}/${mainJs}"
+}
+
+task(run) {
+    dependsOn runNodeMain
+}
