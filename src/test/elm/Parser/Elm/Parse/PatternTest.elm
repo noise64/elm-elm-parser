@@ -18,7 +18,6 @@ tests =
     , testParseBasicPattern "Maybe" <| AstPattern.Data (AstVariable.Raw "Maybe") []
     , testParseBasicPattern "a" <| AstPattern.Var "a"
     , testParseBasicPattern "ab_cd" <| AstPattern.Var "ab_cd"
-    , testParseBasicPattern "_ab_cd" <| AstPattern.Var "_ab_cd"
     ]
 
 testParseBasicPattern : String -> AstPattern.Pattern AstVariable.Raw -> Test
